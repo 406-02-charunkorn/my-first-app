@@ -1,4 +1,4 @@
-import steamlit as st
+import streamlit as st
 
 # 1. หัวข้อใหญ๋: เเนะนำตัวเเละชื่อเจ้าของเว็บ
 st.title("✨ My Digital Profile")
