@@ -238,11 +238,11 @@ else:
 
 
     # =========================
-    # จับเวลา 90 วินาที
+    # จับเวลา 120 วินาที
     # =========================
 
     time_left = int(
-        90 - (time.time() - st.session_state.start)
+        120 - (time.time() - st.session_state.start)
     )
 
     if time_left > 0:
