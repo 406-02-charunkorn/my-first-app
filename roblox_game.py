@@ -4,14 +4,14 @@ import base64
 
 st.title("⏱️ เกมทาย Roblox จับเวลา")
 
+
 # =========================
-# เตรียมคำตอบ
+# ตั้งค่าเริ่มต้น
 # =========================
 for i in range(1, 11):
     if f"ans{i}_val" not in st.session_state:
         st.session_state[f"ans{i}_val"] = ""
 
-# สถานะเกม
 if "is_ended" not in st.session_state:
     st.session_state.is_ended = False
 
@@ -121,74 +121,86 @@ def show_result_dialog(
 # =========================
 # ปุ่มเริ่มเกม
 # =========================
-st.button(
-    "🎮 เริ่มเล่นเกม",
-    on_click=reset_game
-)
+if "start" not in st.session_state:
+    if st.button("🎮 เริ่มเล่นเกม"):
+        reset_game()
+        st.rerun()
 
 
 # =========================
-# คำถาม
+# ถ้ายังไม่ได้เริ่มเกม
 # =========================
-ans1 = st.text_input(
-    "ข้อ 1: อยากเป็นราชาแห่งท้องทะเล ก็ต้องกินผลไม้ 🏴‍☠️",
-    key="ans1_val"
-)
-
-ans2 = st.text_input(
-    "ข้อ 2: อยู่ในป่าให้นานที่สุดและสู้กับสัตว์ประหลาดกวาง 🦌",
-    key="ans2_val"
-)
-
-ans3 = st.text_input(
-    "ข้อ 3: วิ่งเล่นชิวๆ ในโรงแรมผี 🚪",
-    key="ans3_val"
-)
-
-ans4 = st.text_input(
-    "ข้อ 4: ร้านเฟอร์นิเจอร์ที่พนักงานพร้อมต้อนรับคุณ 👽",
-    key="ans4_val"
-)
-
-ans5 = st.text_input(
-    "ข้อ 5: ไซตามะ และความแข็งแกร่ง 🥷",
-    key="ans5_val"
-)
-
-ans6 = st.text_input(
-    "ข้อ 6: ใช้ดาบตีลูกบอล 🗡️⚽",
-    key="ans6_val"
-)
-
-ans7 = st.text_input(
-    "ข้อ 7: หลบภัยธรรมชาติ 🏃‍♂️",
-    key="ans7_val"
-)
-
-ans8 = st.text_input(
-    "ข้อ 8: หนีฆาตกรและตำรวจต้องช่วยเรา 🔪🔫",
-    key="ans8_val"
-)
-
-ans9 = st.text_input(
-    "ข้อ 9: สงครามลอยฟ้าทำลายที่นอนศัตรู 🛌",
-    key="ans9_val"
-)
-
-ans10 = st.text_input(
-    "ข้อ 10: ป้องกันฐานทัพด้วยตัวละครอนิเมะ 🏰",
-    key="ans10_val"
-)
+if "start" not in st.session_state:
+    st.info("กดปุ่ม 🎮 เริ่มเล่นเกม เพื่อเริ่ม")
 
 
 # =========================
-# ระบบจับเวลา
+# ถ้าเกมกำลังเล่น
 # =========================
 if (
     "start" in st.session_state
     and not st.session_state.get("is_ended", False)
     and not st.session_state.get("jumpscare", False)
 ):
+
+    # =========================
+    # คำถาม
+    # =========================
+
+    ans1 = st.text_input(
+        "ข้อ 1: อยากเป็นราชาแห่งท้องทะเล ก็ต้องกินผลไม้ 🏴‍☠️",
+        key="ans1_val"
+    )
+
+    ans2 = st.text_input(
+        "ข้อ 2: อยู่ในป่าให้นานที่สุดและสู้กับสัตว์ประหลาดกวาง 🦌",
+        key="ans2_val"
+    )
+
+    ans3 = st.text_input(
+        "ข้อ 3: วิ่งเล่นชิวๆ ในโรงแรมผี 🚪",
+        key="ans3_val"
+    )
+
+    ans4 = st.text_input(
+        "ข้อ 4: ร้านเฟอร์นิเจอร์ที่พนักงานพร้อมต้อนรับคุณ 👽",
+        key="ans4_val"
+    )
+
+    ans5 = st.text_input(
+        "ข้อ 5: ไซตามะ และความแข็งแกร่ง 🥷",
+        key="ans5_val"
+    )
+
+    ans6 = st.text_input(
+        "ข้อ 6: ใช้ดาบตีลูกบอล 🗡️⚽",
+        key="ans6_val"
+    )
+
+    ans7 = st.text_input(
+        "ข้อ 7: หลบภัยธรรมชาติ 🏃‍♂️",
+        key="ans7_val"
+    )
+
+    ans8 = st.text_input(
+        "ข้อ 8: หนีฆาตกรและตำรวจต้องช่วยเรา 🔪🔫",
+        key="ans8_val"
+    )
+
+    ans9 = st.text_input(
+        "ข้อ 9: สงครามลอยฟ้าทำลายที่นอนศัตรู 🛌",
+        key="ans9_val"
+    )
+
+    ans10 = st.text_input(
+        "ข้อ 10: ป้องกันฐานทัพด้วยตัวละครอนิเมะ 🏰",
+        key="ans10_val"
+    )
+
+
+    # =========================
+    # จับเวลา
+    # =========================
 
     time_left = int(
         120 - (time.time() - st.session_state.start)
@@ -209,21 +221,16 @@ if (
         st.rerun()
 
 
-# =========================
-# ปุ่มส่งคำตอบ
-# =========================
-if (
-    "start" in st.session_state
-    and not st.session_state.get("is_ended", False)
-    and not st.session_state.get("jumpscare", False)
-):
+    # =========================
+    # ปุ่มส่งคำตอบ
+    # =========================
 
     if st.button("📥 ส่งคำตอบ"):
 
-        # กดส่งเองก่อนหมดเวลา
         st.session_state.is_ended = True
 
         st.rerun()
+
 
     # ทำให้เวลานับต่อ
     time.sleep(1)
@@ -231,34 +238,52 @@ if (
 
 
 # =========================
-# แสดงผลลัพธ์
+# Jumpscare
 # =========================
 
-# ถ้าเวลาหมด → แสดงผี
 if st.session_state.get("jumpscare", False):
 
     jumpscare()
 
-# ถ้ากดส่งคำตอบ → แสดงคะแนน
+    # ปุ่มเล่นใหม่
+    if st.button("🔄 เล่นใหม่"):
+
+        reset_game()
+
+        st.rerun()
+
+
+# =========================
+# สรุปคะแนน
+# =========================
+
 elif st.session_state.get("is_ended", False):
 
     show_result_dialog(
-        ans1,
-        ans2,
-        ans3,
-        ans4,
-        ans5,
-        ans6,
-        ans7,
-        ans8,
-        ans9,
-        ans10
+        st.session_state.ans1_val,
+        st.session_state.ans2_val,
+        st.session_state.ans3_val,
+        st.session_state.ans4_val,
+        st.session_state.ans5_val,
+        st.session_state.ans6_val,
+        st.session_state.ans7_val,
+        st.session_state.ans8_val,
+        st.session_state.ans9_val,
+        st.session_state.ans10_val
     )
+
+    # ปุ่มเล่นใหม่
+    if st.button("🔄 เล่นใหม่"):
+
+        reset_game()
+
+        st.rerun()
 
 
 # =========================
 # เครดิต
 # =========================
+
 st.divider()
 
 st.write(
