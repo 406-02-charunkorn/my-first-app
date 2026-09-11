@@ -75,7 +75,7 @@ def show_jumpscare():
     )
 
     # 🔊 เสียงผี
-    st.audio("jumpscare.mp3", autoplay=True)
+    st.audio("freesound_community-jumpscare_sound-95043.mp3", autoplay=True)
 
 
 # =========================
