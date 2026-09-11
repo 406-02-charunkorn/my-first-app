@@ -23,6 +23,7 @@ if "jumpscare" not in st.session_state:
 # เริ่มเกมใหม่
 # =========================
 def reset_game():
+
     for i in range(1, 11):
         st.session_state[f"ans{i}_val"] = ""
 
@@ -32,25 +33,61 @@ def reset_game():
 
 
 # =========================
-# แสดง Jumpscare
+# แสดง Jumpscare + เสียง
 # =========================
 def show_jumpscare():
 
-    # รูปผี
-    with open("jumpscare.jpg", "rb") as f:
-        image_data = base64.b64encode(f.read()).decode()
+    # -------------------------
+    # โหลดรูปผี
+    # -------------------------
+    try:
+        with open("jumpscare.jpg", "rb") as f:
+            image_data = base64.b64encode(f.read()).decode()
 
+        image_src = f"data:image/jpeg;base64,{image_data}"
+
+    except FileNotFoundError:
+        st.error("❌ ไม่พบไฟล์ jumpscare.jpg")
+
+
+    # -------------------------
+    # โหลดเสียง
+    # -------------------------
+    try:
+        with open(
+            "freesound_community-jumpscare_sound-95043.mp3",
+            "rb"
+        ) as f:
+            audio_data = base64.b64encode(f.read()).decode()
+
+        audio_src = f"data:audio/mpeg;base64,{audio_data}"
+
+    except FileNotFoundError:
+        audio_src = ""
+        st.error(
+            "❌ ไม่พบไฟล์ freesound_community-jumpscare_sound-95043.mp3"
+        )
+
+
+    # =========================
+    # Jumpscare เต็มหน้าจอ
+    # =========================
     st.markdown(
         f"""
         <style>
+
         .jumpscare {{
             position: fixed;
             top: 0;
             left: 0;
+
             width: 100vw;
             height: 100vh;
+
             background: black;
+
             z-index: 999999;
+
             display: flex;
             justify-content: center;
             align-items: center;
@@ -59,23 +96,65 @@ def show_jumpscare():
         .jumpscare img {{
             width: 100vw;
             height: 100vh;
+
             object-fit: contain;
         }}
 
         header {{
             visibility: hidden;
         }}
+
         </style>
 
         <div class="jumpscare">
-            <img src="data:image/jpeg;base64,{image_data}">
+
+            <img src="{image_src}">
+
+            <audio
+                id="scareSound"
+                autoplay
+                controls
+                preload="auto"
+                style="
+                    position: fixed;
+                    bottom: 20px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    z-index: 1000000;
+                    width: 300px;
+                "
+            >
+                <source
+                    src="{audio_src}"
+                    type="audio/mpeg"
+                >
+            </audio>
+
         </div>
+
+        <script>
+
+        const audio = document.getElementById("scareSound");
+
+        if (audio) {{
+
+            audio.volume = 1.0;
+
+            audio.play().catch(function(error) {{
+
+                console.log(
+                    "Browser blocked autoplay:",
+                    error
+                );
+
+            }});
+
+        }}
+
+        </script>
         """,
         unsafe_allow_html=True
     )
-
-    # 🔊 เสียงผี
-    st.audio("freesound_community-jumpscare_sound-95043.mp3", autoplay=True)
 
 
 # =========================
@@ -112,20 +191,43 @@ def show_result_dialog():
 
     score = 0
 
-    for user, correct in zip(user_answers, correct_answers):
+    for user, correct in zip(
+        user_answers,
+        correct_answers
+    ):
+
         if user.strip().lower() == correct:
             score += 1
 
-    st.write(f"🎯 คะแนนของคุณ: **{score}/10**")
+
+    st.write(
+        f"🎯 คะแนนของคุณ: **{score}/10**"
+    )
+
 
     if score >= 9:
-        st.success("☠️ Master (อยู่มานาน)")
+
+        st.success(
+            "☠️ Master (อยู่มานาน)"
+        )
+
     elif score >= 7:
-        st.warning("😈 Pro (เซียน Roblox)")
+
+        st.warning(
+            "😈 Pro (เซียน Roblox)"
+        )
+
     elif score >= 5:
-        st.warning("🤡 Regular (ผู้เล่นทั่วไป)")
+
+        st.warning(
+            "🤡 Regular (ผู้เล่นทั่วไป)"
+        )
+
     else:
-        st.error("💩 Noob (มือใหม่ฝึกเล่น)")
+
+        st.error(
+            "💩 Noob (มือใหม่ฝึกเล่น)"
+        )
 
 
 # =========================
@@ -133,9 +235,14 @@ def show_result_dialog():
 # =========================
 if "start" not in st.session_state:
 
-    st.write("กดปุ่มด้านล่างเพื่อเริ่มเกม")
+    st.write(
+        "กดปุ่มด้านล่างเพื่อเริ่มเกม"
+    )
 
-    if st.button("🎮 เริ่มเล่นเกม"):
+    if st.button(
+        "🎮 เริ่มเล่นเกม",
+        use_container_width=True
+    ):
 
         reset_game()
 
@@ -145,20 +252,27 @@ if "start" not in st.session_state:
 # =========================
 # JUMPSCARE
 # =========================
-if st.session_state.get("jumpscare", False):
+if st.session_state.get(
+    "jumpscare",
+    False
+):
 
     show_jumpscare()
 
-    # 👻 แสดงผี 1.5 วินาที
+    # ผีอยู่ 1.5 วินาที
     time.sleep(1.5)
 
-    # เอา Jumpscare ออก
+    # ปิด Jumpscare
     st.session_state.jumpscare = False
+
     st.session_state.is_ended = False
+
 
     # ลบเวลาเก่า
     if "start" in st.session_state:
+
         del st.session_state.start
+
 
     # กลับหน้าเริ่มเกม
     st.rerun()
@@ -169,8 +283,12 @@ if st.session_state.get("jumpscare", False):
 # =========================
 elif (
     "start" in st.session_state
-    and not st.session_state.get("is_ended", False)
+    and not st.session_state.get(
+        "is_ended",
+        False
+    )
 ):
+
 
     # =========================
     # คำถาม
@@ -181,45 +299,54 @@ elif (
         value=st.session_state.ans1_val
     )
 
+
     st.session_state.ans2_val = st.text_input(
         "ข้อ 2: อยู่ในป่าให้นานที่สุดและสู้กับสัตว์ประหลาดกวาง 🦌",
         value=st.session_state.ans2_val
     )
+
 
     st.session_state.ans3_val = st.text_input(
         "ข้อ 3: วิ่งเล่นชิวๆ ในโรงแรมผี 🚪",
         value=st.session_state.ans3_val
     )
 
+
     st.session_state.ans4_val = st.text_input(
         "ข้อ 4: ร้านเฟอร์นิเจอร์ที่พนักงานพร้อมต้อนรับคุณ 👽",
         value=st.session_state.ans4_val
     )
+
 
     st.session_state.ans5_val = st.text_input(
         "ข้อ 5: ไซตามะ และความแข็งแกร่ง 🥷",
         value=st.session_state.ans5_val
     )
 
+
     st.session_state.ans6_val = st.text_input(
         "ข้อ 6: ใช้ดาบตีลูกบอล 🗡️⚽",
         value=st.session_state.ans6_val
     )
+
 
     st.session_state.ans7_val = st.text_input(
         "ข้อ 7: หลบภัยธรรมชาติ 🏃‍♂️",
         value=st.session_state.ans7_val
     )
 
+
     st.session_state.ans8_val = st.text_input(
         "ข้อ 8: หนีฆาตกรและตำรวจต้องช่วยเรา 🔪🔫",
         value=st.session_state.ans8_val
     )
 
+
     st.session_state.ans9_val = st.text_input(
         "ข้อ 9: สงครามลอยฟ้าทำลายที่นอนศัตรู 🛌",
         value=st.session_state.ans9_val
     )
+
 
     st.session_state.ans10_val = st.text_input(
         "ข้อ 10: ป้องกันฐานทัพด้วยตัวละครอนิเมะ 🏰",
@@ -232,8 +359,12 @@ elif (
     # =========================
 
     time_left = int(
-        120 - (time.time() - st.session_state.start)
+        120 - (
+            time.time()
+            - st.session_state.start
+        )
     )
+
 
     if time_left > 0:
 
@@ -241,10 +372,15 @@ elif (
             f"⏳ เหลือเวลา: {time_left} วินาที"
         )
 
+
     else:
 
+        # =========================
         # เวลาหมด → Jumpscare
+        # =========================
+
         st.session_state.jumpscare = True
+
         st.session_state.is_ended = False
 
         st.rerun()
@@ -254,14 +390,20 @@ elif (
     # ปุ่มส่งคำตอบ
     # =========================
 
-    if st.button("📥 ส่งคำตอบ"):
+    if st.button(
+        "📥 ส่งคำตอบ",
+        use_container_width=True
+    ):
 
         st.session_state.is_ended = True
 
         st.rerun()
 
 
+    # =========================
     # ทำให้เวลานับต่อ
+    # =========================
+
     time.sleep(1)
 
     st.rerun()
@@ -270,12 +412,22 @@ elif (
 # =========================
 # สรุปคะแนน
 # =========================
-elif st.session_state.get("is_ended", False):
+elif st.session_state.get(
+    "is_ended",
+    False
+):
 
     show_result_dialog()
 
+
+    # =========================
     # ปุ่มเล่นใหม่
-    if st.button("🔄 เล่นใหม่"):
+    # =========================
+
+    if st.button(
+        "🔄 เล่นใหม่",
+        use_container_width=True
+    ):
 
         reset_game()
 
@@ -285,6 +437,7 @@ elif st.session_state.get("is_ended", False):
 # =========================
 # เครดิต
 # =========================
+
 st.divider()
 
 st.write(
