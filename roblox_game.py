@@ -169,33 +169,39 @@ ans4 = st.text_input(
 )
 ans5 = st.text_input(
     "ข้อ 5: ไซตามะ และความแข็งแกร่ง 🥷",
-    value=st.session_state.ans4_val,
+    value=st.session_state.ans5_val,
 )
 ans6 = st.text_input(
     "ข้อ 6: ใช้ดาบตีลูกบอล 🗡️⚽️",
-    value=st.session_state.ans4_val,
+    value=st.session_state.ans6_val,
 )
 ans7 = st.text_input(
     "ข้อ 7: หลบภัยธรรมมะชาติ 🏃‍♂️",
-    value=st.session_state.ans4_val,
+    value=st.session_state.ans7_val,
 )
 ans8 = st.text_input(
     "ข้อ 8: หนีฆาตกรและะตำรวจต้องช่วยเรา 🔪🔫",
-    value=st.session_state.ans4_val,
+    value=st.session_state.ans8_val,
 )           
 ans9 = st.text_input(
     "ข้อ 9: สงครามลอยฟ้าทำลายที่นอนศัตรู 🛌",
-    value=st.session_state.ans4_val,
+    value=st.session_state.ans9_val,
 )
 ans10 = st.text_input(
-    "ข้อ 10: ",
-    value=st.session_state.ans4_val,
+    "ข้อ 10: ป้องกันฐานทัพด้วยตัวละครอนิเมะ 🏰",
+    value=st.session_state.ans10_val,
 )
 # อัปเดตค่าล่าสุดเข้าตัวแปร
 st.session_state.ans1_val = ans1
 st.session_state.ans2_val = ans2
 st.session_state.ans3_val = ans3
 st.session_state.ans4_val = ans4
+st.session_state.ans5_val = ans5
+st.session_state.ans6_val = ans6
+st.session_state.ans7_val = ans7
+st.session_state.ans8_val = ans8
+st.session_state.ans9_val = ans9
+st.session_state.ans10_val = ans10
 
 # 4. ปุ่มส่งคำตอบ
 if "start" in st.session_state and not st.session_state.get("is_ended", False):
@@ -208,7 +214,7 @@ if "start" in st.session_state and not st.session_state.get("is_ended", False):
 
 # 5. แสดง Dialog ผลลัพธ์
 if st.session_state.get("is_ended", False):
-    show_result_dialog(ans1, ans2, ans3, ans4)
+    show_result_dialog(ans1, ans2, ans3, ans4, ans5, ans6, ans7, ans8, ans9, ans10)
 
 st.divider()
 st.write("นายชรัญกร เรืองเวชชัย เลขที่ 2 ม.4/6")
