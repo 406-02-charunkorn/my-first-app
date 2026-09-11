@@ -82,15 +82,15 @@ def show_result_dialog():
 
     correct_answers = [
         "blox fruits",
-        "99 nights the forest",
+        "steal an egg",
         "doors",
         "3008",
-        "strongest battle grounds",
+        "it girl",
         "blade ball",
-        "natural disaster survival",
+        "rivals",
         "murder mystery",
         "bedwars",
-        "anime defenders"
+        "grow a garden"
     ]
 
     user_answers = [
@@ -178,7 +178,7 @@ elif (
     )
 
     st.session_state.ans2_val = st.text_input(
-        "ข้อ 2: อยู่ในป่าให้นานที่สุดและสู้กับสัตว์ประหลาดกวาง 🦌",
+        "ข้อ 2: ขโมยไข่ของสัตว์แต่ละชนิดและวิ่งให้ไวที่สุด 🪺",
         value=st.session_state.ans2_val
     )
 
@@ -193,7 +193,7 @@ elif (
     )
 
     st.session_state.ans5_val = st.text_input(
-        "ข้อ 5: ไซตามะ และความแข็งแกร่ง 🥷",
+        "ข้อ 5: เดินแฟชั่นโชว์ตามที่คุณเเต่งตัว 💅🏿",
         value=st.session_state.ans5_val
     )
 
@@ -203,7 +203,7 @@ elif (
     )
 
     st.session_state.ans7_val = st.text_input(
-        "ข้อ 7: หลบภัยธรรมชาติ 🏃‍♂️",
+        "ข้อ 7: เกมยิงปืนมุมมองบุคคลที่1(ยุคบุกเบิก) 🔫",
         value=st.session_state.ans7_val
     )
 
@@ -218,7 +218,7 @@ elif (
     )
 
     st.session_state.ans10_val = st.text_input(
-        "ข้อ 10: ป้องกันฐานทัพด้วยตัวละครอนิเมะ 🏰",
+        "ข้อ 10: ปลูกพืชและมีสัตว์เลี้ยง(ยุคบุกเบิก) 🌻",
         value=st.session_state.ans10_val
     )
 
