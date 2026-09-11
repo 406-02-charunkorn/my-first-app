@@ -32,9 +32,10 @@ def reset_game():
 
 
 # =========================
-# Jumpscare
+# แสดง Jumpscare
 # =========================
-def jumpscare():
+def show_jumpscare():
+
     with open("jumpscare.jpg", "rb") as f:
         image_data = base64.b64encode(f.read()).decode()
 
@@ -77,10 +78,7 @@ def jumpscare():
 # สรุปคะแนน
 # =========================
 @st.dialog("📊 สรุปผลการเล่นเกม")
-def show_result_dialog(
-    ans1, ans2, ans3, ans4, ans5,
-    ans6, ans7, ans8, ans9, ans10
-):
+def show_result_dialog():
 
     correct_answers = [
         "blox fruits",
@@ -96,8 +94,16 @@ def show_result_dialog(
     ]
 
     user_answers = [
-        ans1, ans2, ans3, ans4, ans5,
-        ans6, ans7, ans8, ans9, ans10
+        st.session_state.ans1_val,
+        st.session_state.ans2_val,
+        st.session_state.ans3_val,
+        st.session_state.ans4_val,
+        st.session_state.ans5_val,
+        st.session_state.ans6_val,
+        st.session_state.ans7_val,
+        st.session_state.ans8_val,
+        st.session_state.ans9_val,
+        st.session_state.ans10_val
     ]
 
     score = 0
@@ -119,87 +125,106 @@ def show_result_dialog(
 
 
 # =========================
-# ปุ่มเริ่มเกม
+# หน้าเริ่มเกม
 # =========================
 if "start" not in st.session_state:
+
+    st.write("กดปุ่มด้านล่างเพื่อเริ่มเกม")
+
     if st.button("🎮 เริ่มเล่นเกม"):
+
         reset_game()
+
         st.rerun()
 
 
 # =========================
-# ถ้ายังไม่ได้เริ่มเกม
+# JUMPSCARE
 # =========================
-if "start" not in st.session_state:
-    st.info("กดปุ่ม 🎮 เริ่มเล่นเกม เพื่อเริ่ม")
+if st.session_state.get("jumpscare", False):
+
+    show_jumpscare()
+
+    # รอ 1.5 วินาที
+    time.sleep(1.5)
+
+    # เอา Jumpscare ออก
+    st.session_state.jumpscare = False
+    st.session_state.is_ended = False
+
+    # ลบเวลาเก่า
+    if "start" in st.session_state:
+        del st.session_state.start
+
+    # กลับหน้าเริ่มเกม
+    st.rerun()
 
 
 # =========================
-# ถ้าเกมกำลังเล่น
+# เกมกำลังเล่น
 # =========================
-if (
+elif (
     "start" in st.session_state
     and not st.session_state.get("is_ended", False)
-    and not st.session_state.get("jumpscare", False)
 ):
 
     # =========================
     # คำถาม
     # =========================
 
-    ans1 = st.text_input(
+    st.session_state.ans1_val = st.text_input(
         "ข้อ 1: อยากเป็นราชาแห่งท้องทะเล ก็ต้องกินผลไม้ 🏴‍☠️",
-        key="ans1_val"
+        value=st.session_state.ans1_val
     )
 
-    ans2 = st.text_input(
+    st.session_state.ans2_val = st.text_input(
         "ข้อ 2: อยู่ในป่าให้นานที่สุดและสู้กับสัตว์ประหลาดกวาง 🦌",
-        key="ans2_val"
+        value=st.session_state.ans2_val
     )
 
-    ans3 = st.text_input(
+    st.session_state.ans3_val = st.text_input(
         "ข้อ 3: วิ่งเล่นชิวๆ ในโรงแรมผี 🚪",
-        key="ans3_val"
+        value=st.session_state.ans3_val
     )
 
-    ans4 = st.text_input(
+    st.session_state.ans4_val = st.text_input(
         "ข้อ 4: ร้านเฟอร์นิเจอร์ที่พนักงานพร้อมต้อนรับคุณ 👽",
-        key="ans4_val"
+        value=st.session_state.ans4_val
     )
 
-    ans5 = st.text_input(
+    st.session_state.ans5_val = st.text_input(
         "ข้อ 5: ไซตามะ และความแข็งแกร่ง 🥷",
-        key="ans5_val"
+        value=st.session_state.ans5_val
     )
 
-    ans6 = st.text_input(
+    st.session_state.ans6_val = st.text_input(
         "ข้อ 6: ใช้ดาบตีลูกบอล 🗡️⚽",
-        key="ans6_val"
+        value=st.session_state.ans6_val
     )
 
-    ans7 = st.text_input(
+    st.session_state.ans7_val = st.text_input(
         "ข้อ 7: หลบภัยธรรมชาติ 🏃‍♂️",
-        key="ans7_val"
+        value=st.session_state.ans7_val
     )
 
-    ans8 = st.text_input(
+    st.session_state.ans8_val = st.text_input(
         "ข้อ 8: หนีฆาตกรและตำรวจต้องช่วยเรา 🔪🔫",
-        key="ans8_val"
+        value=st.session_state.ans8_val
     )
 
-    ans9 = st.text_input(
+    st.session_state.ans9_val = st.text_input(
         "ข้อ 9: สงครามลอยฟ้าทำลายที่นอนศัตรู 🛌",
-        key="ans9_val"
+        value=st.session_state.ans9_val
     )
 
-    ans10 = st.text_input(
+    st.session_state.ans10_val = st.text_input(
         "ข้อ 10: ป้องกันฐานทัพด้วยตัวละครอนิเมะ 🏰",
-        key="ans10_val"
+        value=st.session_state.ans10_val
     )
 
 
     # =========================
-    # จับเวลา
+    # จับเวลา 120 วินาที
     # =========================
 
     time_left = int(
@@ -214,7 +239,7 @@ if (
 
     else:
 
-        # เวลาหมด → Jumpscare
+        # เวลาหมด
         st.session_state.jumpscare = True
         st.session_state.is_ended = False
 
@@ -222,7 +247,7 @@ if (
 
 
     # =========================
-    # ปุ่มส่งคำตอบ
+    # ส่งคำตอบ
     # =========================
 
     if st.button("📥 ส่งคำตอบ"):
@@ -234,43 +259,16 @@ if (
 
     # ทำให้เวลานับต่อ
     time.sleep(1)
+
     st.rerun()
-
-
-# =========================
-# Jumpscare
-# =========================
-
-if st.session_state.get("jumpscare", False):
-
-    jumpscare()
-
-    # ปุ่มเล่นใหม่
-    if st.button("🔄 เล่นใหม่"):
-
-        reset_game()
-
-        st.rerun()
 
 
 # =========================
 # สรุปคะแนน
 # =========================
-
 elif st.session_state.get("is_ended", False):
 
-    show_result_dialog(
-        st.session_state.ans1_val,
-        st.session_state.ans2_val,
-        st.session_state.ans3_val,
-        st.session_state.ans4_val,
-        st.session_state.ans5_val,
-        st.session_state.ans6_val,
-        st.session_state.ans7_val,
-        st.session_state.ans8_val,
-        st.session_state.ans9_val,
-        st.session_state.ans10_val
-    )
+    show_result_dialog()
 
     # ปุ่มเล่นใหม่
     if st.button("🔄 เล่นใหม่"):
@@ -283,7 +281,6 @@ elif st.session_state.get("is_ended", False):
 # =========================
 # เครดิต
 # =========================
-
 st.divider()
 
 st.write(
