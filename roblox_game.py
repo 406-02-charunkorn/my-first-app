@@ -12,6 +12,9 @@ for i in range(1, 11):
     if f"ans{i}_val" not in st.session_state:
         st.session_state[f"ans{i}_val"] = ""
 
+if "game_started" not in st.session_state:
+    st.session_state.game_started = False
+
 if "is_ended" not in st.session_state:
     st.session_state.is_ended = False
 
@@ -27,6 +30,7 @@ def reset_game():
         st.session_state[f"ans{i}_val"] = ""
 
     st.session_state.start = time.time()
+    st.session_state.game_started = True
     st.session_state.is_ended = False
     st.session_state.jumpscare = False
 
@@ -124,32 +128,19 @@ def show_result_dialog():
         st.error("💩 Noob (มือใหม่ฝึกเล่น)")
 
 
-# =========================
-# หน้าเริ่มเกม
-# =========================
-if "start" not in st.session_state:
-
-    st.write("กดปุ่มด้านล่างเพื่อเริ่มเกม")
-
-    if st.button("🎮 เริ่มเล่นเกม"):
-
-        reset_game()
-
-        st.rerun()
-
-
-# =========================
+# ==================================================
 # JUMPSCARE
-# =========================
-if st.session_state.get("jumpscare", False):
+# ==================================================
+if st.session_state.jumpscare:
 
     show_jumpscare()
 
-    # รอ 1.5 วินาที
+    # แสดงผี 1.5 วินาที
     time.sleep(1.5)
 
-    # เอา Jumpscare ออก
+    # ปิด Jumpscare
     st.session_state.jumpscare = False
+    st.session_state.game_started = False
     st.session_state.is_ended = False
 
     # ลบเวลาเก่า
@@ -160,66 +151,89 @@ if st.session_state.get("jumpscare", False):
     st.rerun()
 
 
-# =========================
+# ==================================================
+# สรุปคะแนน
+# ==================================================
+elif st.session_state.is_ended:
+
+    show_result_dialog()
+
+    st.write("")
+
+    if st.button("🔄 เล่นใหม่", use_container_width=True):
+        reset_game()
+        st.rerun()
+
+
+# ==================================================
+# หน้าเริ่มเกม
+# ==================================================
+elif not st.session_state.game_started:
+
+    st.write("กดปุ่มด้านล่างเพื่อเริ่มเกม")
+
+    if st.button("🎮 เริ่มเล่นเกม", use_container_width=True):
+        reset_game()
+        st.rerun()
+
+
+# ==================================================
 # เกมกำลังเล่น
-# =========================
-elif (
-    "start" in st.session_state
-    and not st.session_state.get("is_ended", False)
-):
+# ==================================================
+else:
 
     # =========================
     # คำถาม
     # =========================
 
-    st.session_state.ans1_val = st.text_input(
+    st.text_input(
         "ข้อ 1: อยากเป็นราชาแห่งท้องทะเล ก็ต้องกินผลไม้ 🏴‍☠️",
-        value=st.session_state.ans1_val
+        key="ans1_val"
     )
 
-    st.session_state.ans2_val = st.text_input(
+    st.text_input(
         "ข้อ 2: ขโมยไข่ของสัตว์แต่ละชนิดและวิ่งให้ไวที่สุด 🪺",
-        value=st.session_state.ans2_val
+        key="ans2_val"
     )
 
-    st.session_state.ans3_val = st.text_input(
+    st.text_input(
         "ข้อ 3: วิ่งเล่นชิวๆ ในโรงแรมผี 🚪",
-        value=st.session_state.ans3_val
+        key="ans3_val"
     )
 
-    st.session_state.ans4_val = st.text_input(
+    st.text_input(
         "ข้อ 4: ร้านเฟอร์นิเจอร์ที่พนักงานพร้อมต้อนรับคุณ 👽",
-        value=st.session_state.ans4_val
+        key="ans4_val"
     )
 
-    st.session_state.ans5_val = st.text_input(
-        "ข้อ 5: เดินแฟชั่นโชว์ตามที่คุณเเต่งตัว 💅🏿",
-        value=st.session_state.ans5_val
+    st.text_input(
+        "ข้อ 5: เดินแฟชั่นโชว์ตามที่คุณแต่งตัว 💅🏿",
+        key="ans5_val"
     )
 
-    st.session_state.ans6_val = st.text_input(
+    st.text_input(
         "ข้อ 6: ใช้ดาบตีลูกบอล 🗡️⚽",
-        value=st.session_state.ans6_val
+        key="ans6_val"
     )
 
-    st.session_state.ans7_val = st.text_input(
-        "ข้อ 7: เกมยิงปืนมุมมองบุคคลที่1(ยุคบุกเบิก) 🔫",
-        value=st.session_state.ans7_val
+    st.text_input(
+        "ข้อ 7: เกมยิงปืนมุมมองบุคคลที่ 1 (ยุคบุกเบิก) 🔫",
+        key="ans7_val"
     )
 
-    st.session_state.ans8_val = st.text_input(
+    st.text_input(
         "ข้อ 8: หนีฆาตกรและตำรวจต้องช่วยเรา 🔪🔫",
-        value=st.session_state.ans8_val
+        key="ans8_val"
     )
 
-    st.session_state.ans9_val = st.text_input(
+    st.text_input(
         "ข้อ 9: สงครามลอยฟ้าทำลายที่นอนศัตรู 🛌",
-        value=st.session_state.ans9_val
+        key="ans9_val"
     )
 
-    st.session_state.ans10_val = st.text_input(
-        "ข้อ 10: ปลูกพืชและมีสัตว์เลี้ยง(ยุคบุกเบิก) 🌻",
-        value=st.session_state.ans10_val
+    st.text_input(
+        "ข้อ 10: ปลูกพืชและมีสัตว์เลี้ยง (ยุคบุกเบิก) 🌻",
+        key="ans10_val"
     )
 
 
@@ -239,8 +253,9 @@ elif (
 
     else:
 
-        # เวลาหมด
+        # เวลาหมด → Jumpscare
         st.session_state.jumpscare = True
+        st.session_state.game_started = False
         st.session_state.is_ended = False
 
         st.rerun()
@@ -250,32 +265,23 @@ elif (
     # ส่งคำตอบ
     # =========================
 
-    if st.button("📥 ส่งคำตอบ"):
+    if st.button(
+        "📥 ส่งคำตอบ",
+        use_container_width=True
+    ):
 
         st.session_state.is_ended = True
+        st.session_state.game_started = False
 
         st.rerun()
 
 
-    # ทำให้เวลานับต่อ
+    # =========================
+    # อัปเดตเวลา
+    # =========================
+
     time.sleep(1)
-
     st.rerun()
-
-
-# =========================
-# สรุปคะแนน
-# =========================
-elif st.session_state.get("is_ended", False):
-
-    show_result_dialog()
-
-    # ปุ่มเล่นใหม่
-    if st.button("🔄 เล่นใหม่"):
-
-        reset_game()
-
-        st.rerun()
 
 
 # =========================
