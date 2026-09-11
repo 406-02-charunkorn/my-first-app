@@ -33,6 +33,17 @@ def reset_game():
     st.session_state.is_ended = False  # ปิด Dialog
     st.session_state.jumpscare = "" 
 
+def jumpscare():
+    st.image(
+        "jumpscare.jpg",
+        use_container_width=True
+    )
+
+    st.audio(
+        "scary.mp3",
+        autoplay=True
+    )
+
 
 # ----------------------------------------------------
 # 📌 ฟังก์ชัน MessageBox (Dialog)
