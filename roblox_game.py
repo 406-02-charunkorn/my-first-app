@@ -143,12 +143,12 @@ st.button("🎮 เริ่มเล่นเกม", on_click=reset_game)
 if "start" in st.session_state and not st.session_state.get("is_ended", False):
     time_left = int(120 - (time.time() - st.session_state.start))
 
-if time_left > 0:
-    st.error(f"⏳ เหลือเวลา: {time_left} วินาที")
-else:
-    st.session_state.is_ended = True
-    st.session_state.jumpscare = True
-    st.rerun()
+    if time_left > 0:
+        st.error(f"⏳ เหลือเวลา: {time_left} วินาที")
+    else:
+        st.session_state.is_ended = True
+        st.session_state.jumpscare = True
+        st.rerun()
 
 st.divider()
 
