@@ -36,6 +36,7 @@ def reset_game():
 # =========================
 def show_jumpscare():
 
+    # รูปผี
     with open("jumpscare.jpg", "rb") as f:
         image_data = base64.b64encode(f.read()).decode()
 
@@ -72,6 +73,9 @@ def show_jumpscare():
         """,
         unsafe_allow_html=True
     )
+
+    # 🔊 เสียงผี
+    st.audio("jumpscare.mp3", autoplay=True)
 
 
 # =========================
@@ -145,7 +149,7 @@ if st.session_state.get("jumpscare", False):
 
     show_jumpscare()
 
-    # รอ 1.5 วินาที
+    # 👻 แสดงผี 1.5 วินาที
     time.sleep(1.5)
 
     # เอา Jumpscare ออก
@@ -239,7 +243,7 @@ elif (
 
     else:
 
-        # เวลาหมด
+        # เวลาหมด → Jumpscare
         st.session_state.jumpscare = True
         st.session_state.is_ended = False
 
@@ -247,7 +251,7 @@ elif (
 
 
     # =========================
-    # ส่งคำตอบ
+    # ปุ่มส่งคำตอบ
     # =========================
 
     if st.button("📥 ส่งคำตอบ"):
