@@ -140,13 +140,14 @@ st.button("🎮 เริ่มเล่นเกม", on_click=reset_game)
 
 # 2. แถบแสดงเวลานับถอยหลัง
 if "start" in st.session_state and not st.session_state.get("is_ended", False):
-    time_left = int(75 - (time.time() - st.session_state.start))
+    time_left = int(120 - (time.time() - st.session_state.start))
 
-    if time_left > 0:
-        st.error(f"⏳ เหลือเวลา: {time_left} วินาที")
-    else:
-        st.session_state.is_ended = True
-        st.rerun()
+   if time_left > 0:
+    st.error(f"⏳ เหลือเวลา: {time_left} วินาที")
+else:
+    st.session_state.is_ended = True
+    st.session_state.jumpscare = True
+    st.rerun()
 
 st.divider()
 
@@ -212,7 +213,11 @@ if "start" in st.session_state and not st.session_state.get("is_ended", False):
     time.sleep(1)
     st.rerun()
 
-# 5. แสดง Dialog ผลลัพธ์
+# 5. แสดง Jumpscare ตอนหมดเวลา
+if st.session_state.get("jumpscare", False):
+    jumpscare()
+
+# 6. แสดง Dialog ผลลัพธ์
 if st.session_state.get("is_ended", False):
     show_result_dialog(ans1, ans2, ans3, ans4, ans5, ans6, ans7, ans8, ans9, ans10)
 
