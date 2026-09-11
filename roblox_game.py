@@ -224,11 +224,11 @@ elif (
 
 
     # =========================
-    # จับเวลา 120 วินาที
+    # จับเวลา 10 วินาที
     # =========================
 
     time_left = int(
-        120 - (time.time() - st.session_state.start)
+        10 - (time.time() - st.session_state.start)
     )
 
     if time_left > 0:
